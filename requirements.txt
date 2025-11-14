@@ -2,4 +2,5 @@ streamlit
 numpy
 pandas
 matplotlib
-fpdf  # ou reportlab si tu continues à l'utiliser
+fpdf
+reportlab
