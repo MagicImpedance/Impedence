@@ -150,18 +150,6 @@ with col3:
         st.metric("SRF (f_srf)", f"{f_srf:.3e} Hz")
 
 # ---------------------------------------
-# Sélection plage de fréquence (globale)
-# ---------------------------------------
-st.subheader("Sélection de la plage de fréquence pour affichage")
-f_min, f_max = st.slider(
-    "Plage (Hz)",
-    min_value=float(f.min()),
-    max_value=float(f.max()),
-    value=(float(f.min()), float(f.max()))
-)
-mask = (f >= f_min) & (f <= f_max)
-
-# ---------------------------------------
 # Utilitaires pour tracer et préparer exports
 # (Figures & DataFrames seront utilisés dans la PARTIE 2/3)
 # ---------------------------------------
@@ -428,3 +416,4 @@ if st.button("Générer le rapport PDF"):
         )
 
     st.success("PDF généré avec succès !")
+
