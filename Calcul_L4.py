@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 st.set_page_config(layout="wide")
-st.title("Analyse d'impédance — (Partie 1/3 : données & calculs)")
+st.title("Analyse d'impédance")
 
 # ---------------------------------------
 # Upload du fichier
@@ -416,4 +416,5 @@ if st.button("Générer le rapport PDF"):
         )
 
     st.success("PDF généré avec succès !")
+
 
