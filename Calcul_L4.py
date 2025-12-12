@@ -323,10 +323,12 @@ with tab4:
     Cp_10k = Cp[idx_10k]
 
     st.write(f"**Cp @ 10 kHz :** {Cp_10k:.3e} F")
+
+    # ESR à 10 kHz
     if ESR_10k is None:
-    st.write("**ESR @ 10 kHz :** hors plage")
-else:
-    st.write(f"**ESR @ 10 kHz :** {ESR_10k:.3e} Ω")
+        st.write("**ESR @ 10 kHz :** hors plage")
+    else:
+        st.write(f"**ESR @ 10 kHz :** {ESR_10k:.3e} Ω")
 
     if f_srf is not None:
         st.write(f"**Fréquence de résonance (SRF) :** {f_srf:.3e} Hz")
