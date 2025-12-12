@@ -156,9 +156,6 @@ with col3:
     else:
         st.metric("SRF (f_srf)", f"{f_srf:.3e} Hz")
 
-st.subheader("Valeurs clés")
-st.write(f"**ESR @ 10 kHz** : {ESR_10kHz:.4f} Ω")
-st.write(f"**Fréquence correspondante** : {freq_esr} Hz")
 
 # ---------------------------------------
 # Utilitaires pour tracer et préparer exports
