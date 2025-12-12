@@ -107,7 +107,14 @@ if (freq_target >= f.min()) and (freq_target <= f.max()):
         Cp_10k = np.nan
 else:
     Cp_10k = None  # hors plage
-#Suppresion calcul ESR
+
+# ESR (Rs) à 10 kHz
+if (freq_target >= f.min()) and (freq_target <= f.max()):
+    idx_10k = np.argmin(np.abs(f - freq_target))
+    ESR_10k = float(Rs[idx_10k])
+else:
+    ESR_10k = None
+    
 # ---------------------------------------
 # Préparer dictionnaire des données disponibles
 # ---------------------------------------
