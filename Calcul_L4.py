@@ -137,6 +137,12 @@ with col1:
     else:
         st.metric("Cp @ 10 kHz", f"{Cp_10k:.3e} F")
 
+with col1:
+    if ESR_10k is None:
+        st.write("ESR @ 10 kHz : hors plage de mesure")
+    else:
+        st.metric("ESR @ 10 kHz", f"{ESR_10k:.3e} Ω")
+
 with col2:
     if Ls is None:
         st.write("Ls : impossible à calculer")
@@ -149,7 +155,13 @@ with col3:
     else:
         st.metric("SRF (f_srf)", f"{f_srf:.3e} Hz")
 
-#Suppression d'une ligne car erreur position de l'affichage ESR
+# ESR (Rs) à 10 kHz
+if (freq_target >= f.min()) and (freq_target <= f.max()):
+    idx_10k = np.argmin(np.abs(f - freq_target))
+    ESR_10k = float(Rs[idx_10k])
+else:
+    ESR_10k = None
+
 # ---------------------------------------
 # Utilitaires pour tracer et préparer exports
 # (Figures & DataFrames seront utilisés dans la PARTIE 2/3)
@@ -311,6 +323,11 @@ with tab4:
     Cp_10k = Cp[idx_10k]
 
     st.write(f"**Cp @ 10 kHz :** {Cp_10k:.3e} F")
+    if ESR_10k is None:
+    st.write("**ESR @ 10 kHz :** hors plage")
+else:
+    st.write(f"**ESR @ 10 kHz :** {ESR_10k:.3e} Ω")
+
     if f_srf is not None:
         st.write(f"**Fréquence de résonance (SRF) :** {f_srf:.3e} Hz")
     else:
