@@ -107,6 +107,15 @@ if (freq_target >= f.min()) and (freq_target <= f.max()):
         Cp_10k = np.nan
 else:
     Cp_10k = None  # hors plage
+    
+# ----- Extraction ESR @ 10 kHz -----
+target_freq = 10_000  # 10 kHz
+idx_esr = (df["Freq (Hz)"] - target_freq).abs().idxmin()
+
+ESR_10kHz = Rs[idx_esr]
+freq_esr = df["Freq (Hz)"].iloc[idx_esr]
+
+print(f"ESR @ 10 kHz : {ESR_10kHz:.4f} Ω (fréquence la plus proche : {freq_esr} Hz)")
 
 # ---------------------------------------
 # Préparer dictionnaire des données disponibles
