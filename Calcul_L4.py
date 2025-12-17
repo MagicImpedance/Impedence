@@ -222,12 +222,85 @@ available_curves = {
 curve1 = st.sidebar.selectbox("Courbe 1 (axe Y gauche)", list(available_curves.keys()))
 curve2 = st.sidebar.selectbox("Courbe 2 (axe Y droite)", list(available_curves.keys()), index=1)
 
-# ---- Fenêtre de fréquence (unique) ----
-fmin, fmax = st.sidebar.slider(
-    "Plage de fréquence (Hz)", 
-    float(f.min()), float(f.max()),
-    (float(f.min()), float(f.max()))
+st.sidebar.markdown("## Fenêtre de fréquence")
+
+f_global_min = float(f.min())
+f_global_max = float(f.max())
+
+# --- Initialisation ---
+if "fmin" not in st.session_state:
+    st.session_state.fmin = f_global_min
+    st.session_state.fmax = f_global_max
+
+# --- Presets (DOIVENT ÊTRE AVANT les widgets) ---
+st.sidebar.markdown("### Presets")
+
+if st.sidebar.button("1 kHz – 10 kHz"):
+    st.session_state.fmin = 1e3
+    st.session_state.fmax = 1e4
+
+if st.sidebar.button("10 kHz – 100 kHz"):
+    st.session_state.fmin = 1e4
+    st.session_state.fmax = 1e5
+
+if st.sidebar.button("100 kHz – 1 MHz"):
+    st.session_state.fmin = 1e5
+    st.session_state.fmax = 1e6
+
+# --- Choix du mode ---
+freq_mode = st.sidebar.radio(
+    "Mode de sélection",
+    ["Saisie numérique", "Slider logarithmique"],
+    index=0
 )
+
+# --- MODE 1 : saisie numérique ---
+if freq_mode == "Saisie numérique":
+
+    fmin = st.sidebar.number_input(
+        "Fréquence début (Hz)",
+        min_value=f_global_min,
+        max_value=f_global_max,
+        value=st.session_state.fmin,
+        format="%.3e",
+        key="fmin"
+    )
+
+    fmax = st.sidebar.number_input(
+        "Fréquence fin (Hz)",
+        min_value=f_global_min,
+        max_value=f_global_max,
+        value=st.session_state.fmax,
+        format="%.3e",
+        key="fmax"
+    )
+
+# --- MODE 2 : slider logarithmique ---
+else:
+    log_fmin = np.log10(f_global_min)
+    log_fmax = np.log10(f_global_max)
+
+    log_fmin_sel, log_fmax_sel = st.sidebar.slider(
+        "Plage de fréquence (log)",
+        log_fmin,
+        log_fmax,
+        (np.log10(st.session_state.fmin),
+         np.log10(st.session_state.fmax))
+    )
+
+    fmin = 10 ** log_fmin_sel
+    fmax = 10 ** log_fmax_sel
+
+    # Synchronisation
+    st.session_state.fmin = fmin
+    st.session_state.fmax = fmax
+
+    st.sidebar.caption(f"{fmin:.3e} Hz → {fmax:.3e} Hz")
+
+# --- Sécurité ---
+if fmin >= fmax:
+    st.sidebar.error("La fréquence de début doit être < à la fréquence de fin")
+
 
 # ---- Log axes ----
 log_x = st.sidebar.checkbox("Axe X logarithmique", True)
@@ -443,5 +516,6 @@ if st.button("Générer le rapport PDF"):
         )
 
     st.success("PDF généré avec succès !")
+
 
 
